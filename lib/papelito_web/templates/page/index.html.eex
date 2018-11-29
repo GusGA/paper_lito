@@ -1,0 +1,10 @@
+<section class="phx-hero">
+  <h1 class="display-4">Papelito game</h1>
+  <p class="lead">A game built in Elixir/Phoenix </p>
+  <hr class="my-4">
+  <p>The main idea with this app is to learn Phoenix, Elixir</p>
+  <div class="initial-actions">
+    <a class="button" href="/rules" role="button">See rules</a>
+    <a class="button button-outline" href="/games/new" role="button">Create a Game</a>
+  </div>
+</section>

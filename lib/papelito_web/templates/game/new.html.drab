@@ -1,0 +1,41 @@
+<div class="row justify-content-md-center">
+  <div class="col-8 text-center">
+    <h3 class="display-4">
+      Create a new game
+    </h1>
+  </div>
+  <div class="col-8">
+    <form action="">
+    <div class="form-row">
+      <div class="col">
+        <label for="game_subject">Game subject</label>
+        <input class="form-control" type="text" name="game_subject" id="game_subject">
+      </div>
+      <div class="col">
+        <label for="team_qty">No. Teams</label>
+        <input class="form-control" type="number" name="teams_qty" id="teams_qty">
+      </div>
+    </div>
+    <div class="row mt-1">
+      <div class="col-12">
+        <div class="mt-1 mb-2">
+          <input class="form-control" type="text" placeholder="Add player name" id="player_name" name="player_name" onfocus="this.value=''">   
+        </div>
+      <button drab="click:add_player" type="button" class="btn btn-info btn-block"> Add player</button>
+      </div>
+      </form>
+    </div>
+    <div class="mt-1 row">
+      <div class="col-12">
+        <ul class="list-group mt-2">
+          <%= for %{index: index, name: name} <- @players do %>
+            <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center">
+              <%= name %>
+              <button class="btn btn-danger btn-sm" drab="click:delete_player(<%= index %>)">delete</button>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

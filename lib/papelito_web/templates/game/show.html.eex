@@ -1,0 +1,4 @@
+<div id="show-game" 
+  data-game-name="<%= @game_name %>"
+  data-game-summary="<%= @game_summary %>">
+</div>

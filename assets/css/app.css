@@ -1,0 +1,14 @@
+/* This file is for your main application css. */
+@import "../vendor/bootstrap/css/bootstrap.min.css";
+.alert:empty {
+  display: none;
+}
+
+.initial-actions {
+  padding-top: 10px;
+}
+
+.game-new-title {
+  text-align: center;
+  padding-top: 30px;
+}
