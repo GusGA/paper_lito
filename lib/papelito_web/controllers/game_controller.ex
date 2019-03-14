@@ -1,6 +1,5 @@
 defmodule PapelitoWeb.GameController do
   use PapelitoWeb, :controller
-  use Drab.Controller, commander: PapelitoWeb.GameCommander
 
   def new(conn, _params) do
     render(conn, "new.html", players: [], teams: [], token: get_csrf_token(), sorted_teams: "")

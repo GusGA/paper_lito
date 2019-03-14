@@ -20,7 +20,7 @@ defmodule Papelito.MixProject do
   def application do
     [
       mod: {Papelito.Application, []},
-      extra_applications: [:logger, :runtime_tools, :drab]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
