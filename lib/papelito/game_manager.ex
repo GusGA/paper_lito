@@ -82,7 +82,7 @@ defmodule Papelito.GameManager do
 
   def create_teams(game_name, teams) do
     teams
-    |> Enum.map(fn t_data -> t_data["name"] end)
+    |> Enum.map(fn t_data -> t_data[:name] end)
     |> Enum.map(fn t_name ->
       Task.async(fn -> Papelito.Server.Game.add_team(game_name, t_name) end)
     end)
@@ -93,7 +93,7 @@ defmodule Papelito.GameManager do
     teams
     |> Enum.map(fn t_data ->
       Task.async(fn ->
-        Papelito.Server.Game.add_player(game_name, t_data["key"], t_data["players"])
+        Papelito.Server.Game.add_player(game_name, t_data[:key], t_data[:players])
       end)
     end)
     |> Enum.map(&Task.await/1)

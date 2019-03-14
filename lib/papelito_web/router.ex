@@ -21,6 +21,7 @@ defmodule PapelitoWeb.Router do
     get("/rules", PageController, :rules)
 
     resources("/games", GameController, only: [:new, :show])
+    post "/games/create", GameController, :create
     get("/games/:game_id/teams/:team_id", TeamsController, :show)
   end
 

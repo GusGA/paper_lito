@@ -44,8 +44,7 @@ defmodule Papelito.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:poison, "~> 3.1"},
-      {:haikunator, git: "https://github.com/gusga/haikunator"},
-      {:drab, git: "https://github.com/grych/drab"}
+      {:haikunator, git: "https://github.com/gusga/haikunator"}
     ]
   end
 

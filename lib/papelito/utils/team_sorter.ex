@@ -1,5 +1,5 @@
 defmodule Papelito.Utils.TeamSorter do
-  alias Papelito.Utils.TeamNameGenerator
+  alias Papelito.Utils.{TeamNameGenerator, Sanitizer}
 
   def perform(players, team_qty) when is_list(players) and is_number(team_qty) do
     div_ = div(length(players), team_qty)
@@ -22,5 +22,12 @@ defmodule Papelito.Utils.TeamSorter do
 
     TeamNameGenerator.generate(team_qty)
     |> Enum.zip(teams_randomized)
+    |> serialize()
+  end
+
+  defp serialize(teams) do
+    Enum.map(teams, fn {name, players} ->
+      %{key: Sanitizer.clean(name), name: name, players: players}
+    end)
   end
 end

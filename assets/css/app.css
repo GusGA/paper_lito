@@ -12,3 +12,11 @@
   text-align: center;
   padding-top: 30px;
 }
+
+.sort-button-hide {
+  display: none;
+}
+
+.create-game-hide {
+  display: none;
+}

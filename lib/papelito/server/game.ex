@@ -4,7 +4,7 @@ defmodule Papelito.Server.Game do
 
   alias Papelito.{GamePlay, GameStorage}
 
-  @timeout :timer.hours(3)
+  @timeout :timer.hours(1)
 
   def start_link(game_name, subject) do
     name = via_tuple(game_name)
