@@ -2,7 +2,7 @@ defmodule PapelitoWeb.GameController do
   use PapelitoWeb, :controller
 
   def new(conn, _params) do
-    render(conn, "new.html", players: [], teams: [], token: get_csrf_token(), sorted_teams: "")
+    render(conn, "new.html")
   end
 
   def create(conn, params) do
@@ -15,7 +15,7 @@ defmodule PapelitoWeb.GameController do
         |> redirect(to: Routes.game_path(conn, :show, game_data.game_name))
 
       false ->
-        render(conn, "new.html", players: [], teams: [], token: get_csrf_token(), sorted_teams: "")
+        render(conn, "new.html")
     end
   end
 
