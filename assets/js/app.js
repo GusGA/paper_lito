@@ -15,5 +15,23 @@ import "phoenix_html"
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+import loadView from "./views/loader";
 
-window.__socket = require("phoenix").Socket;
+function handleDOMContentLoaded() {
+  // Get the current view name
+  const viewName = document.getElementsByTagName("body")[0].dataset.jsViewName;
+
+  // Load view class and mount it
+  const ViewClass = loadView(viewName);
+  const view = new ViewClass();
+  view.mount();
+
+  window.currentView = view;
+}
+
+function handleDocumentUnload() {
+  window.currentView.unmount();
+}
+
+window.addEventListener("DOMContentLoaded", handleDOMContentLoaded, false);
+window.addEventListener("unload", handleDocumentUnload, false);
