@@ -5,17 +5,13 @@ defmodule Papelito.GameManager do
   alias Papelito.Model.{Game, GameLog}
   alias Papelito.Repo
 
-  def new_game(subject) when not is_nil(subject) do
+  def new_game do
     game_name = Haikunator.build()
 
-    case Papelito.Supervisor.GameSupervisor.start_game({game_name, subject}) do
+    case Papelito.Supervisor.GameSupervisor.start_game(game_name) do
       {:ok, _} -> {:name, game_name}
-      {:error, _} -> new_game(subject)
+      {:error, _} -> new_game
     end
-  end
-
-  def new_game(subject) when is_nil(subject) do
-    {:error, "subject must not be nil"}
   end
 
   def summary(game_name) do

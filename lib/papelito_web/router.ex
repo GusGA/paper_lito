@@ -1,16 +1,19 @@
 defmodule PapelitoWeb.Router do
   use PapelitoWeb, :router
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(Phoenix.LiveView.Flash)
+    plug(:fetch_flash)
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
+    plug(:put_layout, {PapelitoWeb.LayoutView, :app})
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   scope "/", PapelitoWeb do
@@ -19,9 +22,9 @@ defmodule PapelitoWeb.Router do
 
     get("/", PageController, :index)
     get("/rules", PageController, :rules)
-
-    resources("/games", GameController, only: [:new, :show])
-    post "/games/create", GameController, :create
+    live("/games/new", GameLive.New)
+    get("/games/:game_id", GameController, :show)
+    # post("/games/create", GameController, :create)
     get("/games/:game_id/teams/:team_id", TeamsController, :show)
   end
 

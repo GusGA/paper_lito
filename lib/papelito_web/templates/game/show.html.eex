@@ -5,9 +5,6 @@
     </h4>
   </div>
   <div class="col-10">
-    <h5 class="display">
-      <%= @summary.game.subject %>
-    </h5>
     <ul class="list-group mt-2">
       <%= for {_, team} <- @summary.game.teams do %>
         <div>

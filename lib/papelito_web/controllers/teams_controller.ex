@@ -11,10 +11,9 @@ defmodule PapelitoWeb.TeamsController do
       true ->
         summary = Papelito.GameManager.summary(game_name)
         team = summary.game.teams[team_id]
-        subject = summary.game.subject
 
         conn
-        |> render("show.html", game_name: game_name, team: team, subject: subject, papers: [])
+        |> render("show.html", game_name: game_name, team: team, papers: [])
     end
   end
 
@@ -28,10 +27,9 @@ defmodule PapelitoWeb.TeamsController do
       true ->
         summary = Papelito.GameManager.summary(game_name)
         team = summary.game.teams[team_id]
-        subject = summary.game.subject
 
         conn
-        |> render("show.html", game_name: game_name, team: team, subject: subject, papers: [])
+        |> render("show.html", game_name: game_name, team: team, papers: [])
     end
   end
 end

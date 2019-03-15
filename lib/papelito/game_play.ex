@@ -22,10 +22,10 @@ defmodule Papelito.GamePlay do
           teams_order: [String.t()]
         }
 
-  @spec new(GamePlay.t()) :: GamePlay.t()
-  def new(subject) do
+  @spec new() :: GamePlay.t()
+  def new do
     %__MODULE__{
-      game: GameData.create(subject)
+      game: GameData.create()
     }
   end
 

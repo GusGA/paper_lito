@@ -11,10 +11,10 @@ defmodule Papelito.Supervisor.GameSupervisor do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
 
-  def start_game({game_name, subject}) do
+  def start_game(game_name) do
     child_spec = %{
       id: Papelito.Server.Game,
-      start: {Papelito.Server.Game, :start_link, [game_name, subject]},
+      start: {Papelito.Server.Game, :start_link, [game_name]},
       restart: :transient
     }
 

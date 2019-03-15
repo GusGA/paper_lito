@@ -5,13 +5,13 @@ defmodule Papelito.Model.GameTest do
   alias Papelito.Model.Team
 
   test "Create game" do
-    game = %Game{subject: "Phrases", papers: [], teams: %{}}
+    game = %Game{papers: [], teams: %{}}
 
-    assert Game.create("Phrases") == game
+    assert Game.create() == game
   end
 
   test "Add team" do
-    game = %Game{subject: "Phrases", papers: [], teams: %{}}
+    game = %Game{papers: [], teams: %{}}
     team_one_name = "team_one"
     team_one = %Team{name: team_one_name, players: [], score: 0, id: "team_one"}
 
@@ -31,7 +31,7 @@ defmodule Papelito.Model.GameTest do
     team_one = %Team{name: "t_one", players: [], score: 0}
     team_two = %Team{name: "t_two", players: [], score: 0}
     teams = %{"t_one" => team_one, "t_two" => team_two}
-    game_a = %Game{subject: "phrases", papers: [], teams: teams}
+    game_a = %Game{papers: [], teams: teams}
 
     updated_game_a = Game.add_point_to_team(game_a, "t_one")
     assert updated_game_a.teams["t_one"].score == 1
@@ -48,7 +48,7 @@ defmodule Papelito.Model.GameTest do
     team_one_a = %Team{name: "t_one", players: [], score: 10}
     team_two_a = %Team{name: "t_two", players: [], score: 15}
     teams = %{"t_one" => team_one_a, "t_two" => team_two_a}
-    game_a = %Game{subject: "Phrases", papers: [], teams: teams}
+    game_a = %Game{papers: [], teams: teams}
     assert Game.winner(game_a) == [team_two_a]
 
     # Tie
@@ -56,7 +56,7 @@ defmodule Papelito.Model.GameTest do
     team_two_b = %Team{name: "t_two", players: [], score: 15}
     team_three_b = %Team{name: "t_three", players: [], score: 15}
     teams_b = %{"t_one" => team_one_b, "t_two" => team_two_b, "t_three" => team_three_b}
-    game_b = %Game{subject: "phrases", papers: [], teams: teams_b}
+    game_b = %Game{papers: [], teams: teams_b}
     assert Game.winner(game_b) == [team_three_b, team_two_b]
   end
 
@@ -68,7 +68,7 @@ defmodule Papelito.Model.GameTest do
     team_one = %Team{name: "t_one", players: [], score: 0}
     team_two = %Team{name: "t_two", players: [], score: 0}
     teams = %{"t_one" => team_one, "t_two" => team_two}
-    game = %Game{subject: "Characters", teams: teams, papers: []}
+    game = %Game{teams: teams, papers: []}
 
     game = Game.add_paper(game, one)
     assert game.papers == [one]

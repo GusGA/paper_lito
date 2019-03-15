@@ -5,10 +5,10 @@ defmodule Papelito.GameStorage do
     :ets.new(:game_table, [:set, :public, :named_table])
   end
 
-  def fetch_game(game_name, subject) do
+  def fetch_game(game_name) do
     case :ets.lookup(:game_table, game_name) do
       [] ->
-        game = GamePlay.new(subject)
+        game = GamePlay.new()
         :ets.insert(:game_table, {game_name, game})
         game
 

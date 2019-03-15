@@ -6,17 +6,17 @@ defmodule Papelito.Server.Game do
 
   @timeout :timer.hours(1)
 
-  def start_link(game_name, subject) do
+  def start_link(game_name) do
     name = via_tuple(game_name)
-    GenServer.start_link(__MODULE__, {game_name, subject}, name: name)
+    GenServer.start_link(__MODULE__, game_name, name: name)
   end
 
   defp via_tuple(game_name) do
     {:via, Registry, {:game_registry, game_name}}
   end
 
-  def init({game_name, subject}) do
-    state = GameStorage.fetch_game(game_name, subject)
+  def init(game_name) do
+    state = GameStorage.fetch_game(game_name)
     Logger.info("Spawned game process named #{game_name}")
     {:ok, state, @timeout}
   end

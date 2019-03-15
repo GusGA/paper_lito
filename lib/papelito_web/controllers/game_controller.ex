@@ -6,20 +6,14 @@ defmodule PapelitoWeb.GameController do
   end
 
   def create(conn, params) do
-    case validate_subject_params(params["game_subject"]) do
-      true ->
-        game_data = create_game(params)
+    game_data = create_game(params)
 
-        conn
-        |> put_flash(:info, "Game Created successfully.")
-        |> redirect(to: Routes.game_path(conn, :show, game_data.game_name))
-
-      false ->
-        render(conn, "new.html")
-    end
+    conn
+    |> put_flash(:info, "Game Created successfully.")
+    |> redirect(to: Routes.game_path(conn, :show, game_data.game_name))
   end
 
-  def show(conn, %{"id" => game_name}) do
+  def show(conn, %{"game_id" => game_name}) do
     case Papelito.GameManager.alive?(game_name) do
       false ->
         conn
@@ -39,18 +33,11 @@ defmodule PapelitoWeb.GameController do
   ##    Helpers     ##
   ## -------------- ##
 
-  def all_saved() do
-  end
-
-  defp create_game(%{"game_subject" => subject, "sorted_teams" => sorted_teams} = _params) do
+  defp create_game(%{"sorted_teams" => sorted_teams} = _params) do
     teams = Poison.decode!(sorted_teams, %{keys: :atoms!})
-    {:name, name} = Papelito.GameManager.new_game(subject)
+    {:name, name} = Papelito.GameManager.new_game()
     Papelito.GameManager.add_teams(name, teams)
 
     %{game_name: name, summary: Papelito.GameManager.summary(name)}
-  end
-
-  defp validate_subject_params(subject) do
-    is_binary(subject) && subject !== "" && !is_nil(subject)
   end
 end

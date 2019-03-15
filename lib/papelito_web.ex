@@ -33,15 +33,15 @@ defmodule PapelitoWeb do
         root: "lib/papelito_web/templates",
         namespace: PapelitoWeb
 
+      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
       # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
-
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
       import PapelitoWeb.ErrorHelpers
       import PapelitoWeb.Gettext
       alias PapelitoWeb.Router.Helpers, as: Routes
+      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
     end
   end
 
@@ -50,6 +50,7 @@ defmodule PapelitoWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 

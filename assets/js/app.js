@@ -10,6 +10,7 @@ import css from "../css/app.css"
 // Import dependencies
 //
 import "phoenix_html"
+import LiveSocket from "phoenix_live_view"
 
 // Import local files
 //
@@ -26,6 +27,8 @@ function handleDOMContentLoaded() {
   const view = new ViewClass();
   view.mount();
 
+  let liveSocket = new LiveSocket("/live")
+  liveSocket.connect()
   window.currentView = view;
 }
 

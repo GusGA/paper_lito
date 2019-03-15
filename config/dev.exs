@@ -52,7 +52,8 @@ config :papelito, PapelitoWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/papelito_web/views/.*(ex)$},
-      ~r{lib/papelito_web/templates/.*(eex|drab)$}
+      ~r{lib/papelito_web/templates/.*(eex|drab)$},
+      ~r{lib/papelito_web/live/.*(ex)$}
     ]
   ]
 

@@ -2,17 +2,16 @@ defmodule Papelito.Model.Game do
   alias __MODULE__
   alias Papelito.Model.Team
 
-  defstruct subject: "", teams: %{}, papers: []
+  defstruct teams: %{}, papers: []
 
   @type t :: %__MODULE__{
-          subject: String.t(),
           teams: map(),
           papers: [String.t()]
         }
 
-  @spec create(String.t()) :: Game.t()
-  def create(subject) do
-    %Game{subject: subject}
+  @spec create() :: Game.t()
+  def create() do
+    %Game{}
   end
 
   @spec add_team(Game.t(), String.t()) :: Game.t()
