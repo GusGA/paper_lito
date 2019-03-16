@@ -40,7 +40,7 @@ defmodule PapelitoWeb.GameLive.New do
 
   def handle_event(
         "add_player",
-        %{"params" => %{"player_name" => name, "teams_qty" => teams_qty}} = params,
+        %{"params" => %{"player_name" => name, "teams_qty" => teams_qty}} = _params,
         socket
       ) do
     players =
