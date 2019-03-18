@@ -1,8 +1,8 @@
-defmodule Papelito.Events.PlayerHandler do
+defmodule Papelito.Events.Player.Handler do
   use GenEvent
 
   def register_with_manager do
-    Papelito.Event.PlayerManager.register(__MODULE__, nil)
+    Papelito.Event.Player.Manager.register(__MODULE__, nil)
   end
 
   def handle_event({:update, {team_name, player_name}}, _) do
