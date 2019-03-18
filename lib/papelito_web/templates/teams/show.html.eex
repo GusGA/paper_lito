@@ -1,16 +1,20 @@
 <div class="jumbotron" id="team_show" data-team-id=<%=@team.id%>>
   <h1 class="jumbotron-heading text-center"><%= @team.name %></h1>
-  </div>
-  <div class="row">
+</div>
+<div class="row">
     <div class="col">
-      <ul class="list-group">
+      <div class="accordion" id="accordionExample">
+        <ul class="list-group">
         <%= for player <- @team.players do %>
-          <li class="list-group-item" id=<%= player %> > <%= player %>
-              <span class="float-right" >
-                <div class="d-inline p-2 bg-warning text-white">Pending</div>
+          <li class="list-group-item" id=<%= player %>>
+            <%= player %>
+              <span class="float-right">
+                <%= link("Add paper", to: Routes.live_path(@conn, PapelitoWeb.PlayerLive.Show, @game_name, @team.id, player), class: "btn btn-primary") %>
+                <div class="d-inline p-2 bg-warning text-white player-status">Pending</div>
               </span>
             </li>
-        <% end %>
-      </ul>
+            <% end %>
+            </ul>
+      </div>
     </div>
-  </div>
+</div>

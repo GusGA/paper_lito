@@ -11,6 +11,7 @@ import css from "../css/app.css"
 //
 import "phoenix_html"
 import LiveSocket from "phoenix_live_view"
+import jquery from "jquery";
 
 // Import local files
 //

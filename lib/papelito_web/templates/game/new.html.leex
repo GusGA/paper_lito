@@ -35,7 +35,7 @@
       <div class="card-body">
         <h3 class="text-center">Add Players</h3>
         <hr>
-        <%= form_for @changeset, "", [phx_change: :teams_qty_change, phx_submit: :add_player, class: "form", as: :params, method: "get"], fn f -> %>
+        <%= form_for @changeset, "", [phx_change: :teams_qty_change, phx_submit: :add_player, class: "form", as: :params], fn f -> %>
         <div class="form-group">
           <label for="cc_name">Team qty</label>
           <%= select f, :teams_qty, 1..10, [class: "form-control"] %>

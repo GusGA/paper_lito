@@ -43,7 +43,10 @@ defmodule Papelito.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Papelito.Supervisor]
-    Supervisor.start_link(children, opts)
+
+    with {:ok, pid} <- Supervisor.start_link(children, opts),
+         :ok <- Papelito.Events.PlayerHandler.register_with_manager(),
+         do: {:ok, pid}
   end
 
   # Tell Phoenix to update the endpoint configuration

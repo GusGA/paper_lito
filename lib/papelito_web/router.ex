@@ -26,6 +26,7 @@ defmodule PapelitoWeb.Router do
     get("/games/:game_id", GameController, :show)
     # post("/games/create", GameController, :create)
     get("/games/:game_id/teams/:team_id", TeamsController, :show)
+    live("/games/:game_id/teams/:team_id/:player_name", PlayerLive.Show)
   end
 
   # Other scopes may use custom stacks.

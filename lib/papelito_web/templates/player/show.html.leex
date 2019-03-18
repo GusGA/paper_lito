@@ -1,0 +1,39 @@
+<div class="row">
+      <div class="col">
+        <div class="card">
+          <h5 class="card-header text-center text-white bg-info"><%= @player_name %> - <%= @team_name %></h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">Paper</h5>
+            <%= form_for %Plug.Conn{}, "", [phx_submit: :add_paper, class: "form", as: :params], fn f -> %>
+              <div class="form-group">
+                <%= text_input f, :paper, [class: "form-control"] %>
+              </div>
+              <div class="form-group row">
+                <div class="col-12">
+                  <%= submit "Add player", [phx_disable_with: "Adding paper...", class: "btn btn-success btn-lg btn-block"] %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="w-100 mt-4"></div>
+      <div class="col">
+        <ul class="list-group">
+         <%= for {paper, index} <- Enum.with_index(@papers) do %>
+          <li class="list-group-item"> <%= paper %>
+            <span class="float-right button-group">
+              <button type="button" class="btn btn-danger" phx-click="delete_paper" phx-value=<%= index %>>
+                Delete</button>
+            </span>
+          </li>
+         <% end %>
+        </ul>
+      </div>
+      <div class="w-100 mt-4"></div>
+       <%= if length(@papers) > 0 do %>
+        <div class="col">
+          <button type="button" class="btn btn-block btn-warning" phx-click="save_papers">Save</button>
+        </div>
+      <% end %>
+    </div>
