@@ -9,8 +9,18 @@ defmodule Papelito.Supervisor.Root do
 
   def init(:ok) do
     children = [
-      {DynamicSupervisor, name: Papelito.Supervisor.GameSupervisor, strategy: :one_for_one},
-      {Registry, keys: :unique, name: :game_registry}
+      Supervisor.child_spec(
+        {DynamicSupervisor, name: Papelito.Supervisor.GameSupervisor, strategy: :one_for_one},
+        id: :sup_game
+      ),
+      Supervisor.child_spec(
+        {DynamicSupervisor, name: Papelito.Supervisor.Lock, strategy: :one_for_one},
+        id: :sup_lock
+      ),
+      Supervisor.child_spec(
+        {Registry, keys: :unique, name: :game_registry},
+        id: :game_registry_id
+      )
     ]
 
     Supervisor.init(children, strategy: :one_for_all)

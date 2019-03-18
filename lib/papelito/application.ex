@@ -34,7 +34,7 @@ defmodule Papelito.Application do
       # Start your own worker by calling: Papelito.Worker.start_link(arg1, arg2, arg3)
       # worker(Papelito.Worker, [arg1, arg2, arg3]),
       supervisor(Papelito.Supervisor.Root, [:ok]),
-      Papelito.Event.PlayerManager.child_spec()
+      Papelito.Events.Player.Manager.child_spec()
     ]
 
     # Game persistency
@@ -45,7 +45,7 @@ defmodule Papelito.Application do
     opts = [strategy: :one_for_one, name: Papelito.Supervisor]
 
     with {:ok, pid} <- Supervisor.start_link(children, opts),
-         :ok <- Papelito.Events.PlayerHandler.register_with_manager(),
+         :ok <- Papelito.Events.Player.Handler.register_with_manager(),
          do: {:ok, pid}
   end
 

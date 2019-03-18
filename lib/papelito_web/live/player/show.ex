@@ -83,7 +83,9 @@ defmodule PapelitoWeb.PlayerLive.Show do
       true ->
         Papelito.GameManager.add_papers(socket.assigns.game_id, socket.assigns.papers)
 
-        Papelito.Event.PlayerManager.update({socket.assigns.team_id, socket.assigns.player_name})
+        Papelito.Events.Player.Manager.update_palyer_status(
+          {socket.assigns.team_id, socket.assigns.player_name, "done"}
+        )
 
         {:stop,
          socket
