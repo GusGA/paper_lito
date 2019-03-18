@@ -6,7 +6,8 @@ defmodule Papelito.Events.Player.Handler do
   end
 
   def handle_event({:update, {team_name, player_name}}, _) do
-    IO.inspect("evento update")
+    # TODO
+    # que el status venga por parametro
     PapelitoWeb.PlayersStatusChannel.broadcast_update_status(team_name, player_name, "done")
     {:ok, nil}
   end

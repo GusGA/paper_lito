@@ -5,6 +5,7 @@ defmodule PapelitoWeb.TeamsController do
     case Papelito.GameManager.alive?(game_name) do
       false ->
         conn
+        |> put_flash(:error, "The game does not exist, please create a new one")
         |> redirect(to: "/games/new")
         |> halt()
 
@@ -21,6 +22,7 @@ defmodule PapelitoWeb.TeamsController do
     case Papelito.GameManager.alive?(game_name) do
       false ->
         conn
+        |> put_flash(:error, "The game does not exist, please create a new one")
         |> redirect(to: "/games/new")
         |> halt()
 
