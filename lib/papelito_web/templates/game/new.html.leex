@@ -38,7 +38,7 @@
         <%= form_for @changeset, "", [phx_change: :teams_qty_change, phx_submit: :add_player, class: "form", as: :params], fn f -> %>
         <div class="form-group">
           <label for="cc_name">Team qty</label>
-          <%= select f, :teams_qty, 1..10, [class: "form-control"] %>
+          <%= select f, :teams_qty, 2..10, [class: "form-control"] %>
         </div>
         <div class="form-group">
           <label for="cc_name">Player's Name</label>

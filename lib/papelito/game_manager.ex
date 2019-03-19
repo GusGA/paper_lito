@@ -21,6 +21,7 @@ defmodule Papelito.GameManager do
   def add_teams(game_name, teams) when is_list(teams) do
     create_teams(game_name, teams)
     add_players(game_name, teams)
+    start_locks(game_name, teams)
   end
 
   def add_papers(game_name, papers) when is_list(papers) do
@@ -93,5 +94,12 @@ defmodule Papelito.GameManager do
       end)
     end)
     |> Enum.map(&Task.await/1)
+  end
+
+  def start_locks(game_name, teams) do
+    Enum.map(teams, fn team -> team.key end)
+    |> Enum.each(fn team_id ->
+      Papelito.LockManager.start_team_lock(team_id, game_name)
+    end)
   end
 end
