@@ -80,7 +80,7 @@ defmodule PapelitoWeb.GameLive.New do
      )}
   end
 
-  def handle_event("sort_player", value, socket) do
+  def handle_event("sort_player", _value, socket) do
     players = socket.assigns.players
     teams_qty = socket.assigns.teams_qty
     sorted_teams = Papelito.Utils.TeamSorter.perform(players, teams_qty)
@@ -129,5 +129,9 @@ defmodule PapelitoWeb.GameLive.New do
     Papelito.GameManager.add_teams(name, sorted_teams)
 
     %{game_name: name, summary: Papelito.GameManager.summary(name)}
+  end
+
+  def terminate(_reason, _socket) do
+    :ok
   end
 end

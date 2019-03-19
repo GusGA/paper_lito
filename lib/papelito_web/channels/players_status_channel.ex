@@ -1,8 +1,10 @@
 defmodule PapelitoWeb.PlayersStatusChannel do
   use PapelitoWeb, :channel
 
-  def join("players_status:" <> team_id, payload, socket) do
-    {:ok, "Joined player status from team #{team_id}", socket}
+  def join("players_status:" <> team_id, %{"game_id" => game_id} = payload, socket) do
+    summary = Papelito.GameManager.summary(game_id)
+    team = summary.game.teams[team_id]
+    {:ok, team, socket}
   end
 
   def broadcast_update_status(team_id, player_name, status) do

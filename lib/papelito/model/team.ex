@@ -1,6 +1,6 @@
 defmodule Papelito.Model.Team do
   alias __MODULE__
-
+  @derive Jason.Encoder
   defstruct players: [], score: 0, name: "", id: "", papers_added: false
 
   @type t :: %__MODULE__{

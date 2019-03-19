@@ -2,7 +2,7 @@ defmodule Papelito.Server.Lock.Team do
   use GenServer
   require Logger
 
-  @timeout :timer.minutes(10)
+  @timeout :timer.hours(1)
 
   def start_link(team_id, game_name) do
     IO.inspect(team_id)

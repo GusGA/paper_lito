@@ -1,4 +1,4 @@
-<div class="jumbotron" id="team_show" data-team-id=<%=@team.id%>>
+<div class="jumbotron" id="team_show" data-team-id=<%=@team.id%> data-game-id=<%=@game_name%> >
   <h1 class="jumbotron-heading text-center"><%= @team.name %></h1>
 </div>
 <div class="row">

@@ -2,7 +2,6 @@ defmodule PapelitoWeb.PlayerLive.Show do
   use Phoenix.LiveView
   alias PapelitoWeb.Router.Helpers, as: Routes
   alias Papelito.GameManager
-  alias Papelito.LockManager
 
   def mount(
         %{
@@ -14,10 +13,9 @@ defmodule PapelitoWeb.PlayerLive.Show do
         },
         socket
       ) do
-    case GameManager.alive?(game_id) && !LockManager.player_unlocked?(team_id, player_name) do
+    case GameManager.alive?(game_id) do
       true ->
         team_data = fetch_team_summary(game_id, team_id)
-        LockManager.lock_player(team_id, player_name)
 
         {:ok,
          assign(

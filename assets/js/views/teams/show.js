@@ -2,6 +2,17 @@ import MainView from "../main";
 import socket from "../../socket"
 
 export default class View extends MainView {
+  constructor() {
+    super()
+    this.status = {}
+  }
+
+  buildStatus(teamData) {
+    teamData.players.reduce((statusObj, player) => {
+      statusObj[player] = "pending"
+    }, this.status)
+    console.log(this.status)
+  }
 
   changeStatus(statusKey, domElem) {
     let status = {
@@ -22,13 +33,16 @@ export default class View extends MainView {
   }
   mount() {
     super.mount();
-    var topic = "players_status:" + document.getElementById("team_show").getAttribute("data-team-id")
-    let channel = socket.channel(topic, {})
+    var game_id = document.getElementById("team_show").getAttribute("data-game-id")
+    var team_id = document.getElementById("team_show").getAttribute("data-team-id")
+    var topic = "players_status:" + team_id
+    let channel = socket.channel(topic, { game_id: game_id })
     channel.join()
       .receive("ok", data => {
+        this.buildStatus(data)
         console.log("Joined topic", topic)
       })
-      .receive("error", resp => {
+      .receive("error", _resp => {
         console.log("Unable to join topic", topic)
       })
 
