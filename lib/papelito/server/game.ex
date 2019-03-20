@@ -22,7 +22,7 @@ defmodule Papelito.Server.Game do
   end
 
   ## ------------------##
-  ##    Client API    ##
+  ##    Client API     ##
   ## ------------------##
 
   def pid(game_name) do
