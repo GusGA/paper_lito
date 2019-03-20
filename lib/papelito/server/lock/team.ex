@@ -58,11 +58,11 @@ defmodule Papelito.Server.Lock.Team do
   ## Server functions
 
   def handle_call({:player_unlocked?, player_name}, _from, state) do
-    {:reply, Map.get(state, player_name), state, @timeout}
+    {:reply, get_lock(state, player_name), state, @timeout}
   end
 
   def handle_call({:team_unlocked?, team_name}, _from, state) do
-    {:reply, Map.get(state, team_name), state, @timeout}
+    {:reply, get_lock(state, team_name), state, @timeout}
   end
 
   def handle_cast(:unlock_all, state) do
@@ -74,23 +74,19 @@ defmodule Papelito.Server.Lock.Team do
   end
 
   def handle_cast({:lock_player, player_name}, state) do
-    new_state = update_player_lock(state, player_name, true)
-    {:noreply, new_state, @timeout}
+    {:noreply, update_lock(state, player_name, true), @timeout}
   end
 
   def handle_cast({:lock_team, team_id}, state) do
-    new_state = update_player_lock(state, team_id, true)
-    {:noreply, new_state, @timeout}
+    {:noreply, update_lock(state, team_id, true), @timeout}
   end
 
   def handle_cast({:unlock_player, player_name}, state) do
-    new_state = update_player_lock(state, player_name, false)
-    {:noreply, new_state, @timeout}
+    {:noreply, update_lock(state, player_name, false), @timeout}
   end
 
   def handle_cast({:unlock_team, team_id}, state) do
-    new_state = update_player_lock(state, team_id, false)
-    {:noreply, new_state, @timeout}
+    {:noreply, update_lock(state, team_id, false), @timeout}
   end
 
   ## Helper functions
@@ -107,13 +103,11 @@ defmodule Papelito.Server.Lock.Team do
     update_all(state, true)
   end
 
-  defp update_player_lock(state, player_name, lock_status) do
-    Map.put(state, player_name, lock_status)
+  defp update_lock(state, resource_name, lock_status) do
+    Map.put(state, resource_name, lock_status)
   end
 
-  defp update_team_lock(state, team_id, lock_status) do
-    Map.put(state, team_id, lock_status)
-  end
+  defp get_lock(state, resource_name), do: Map.get(state, resource_name)
 
   defp update_all(state, value) do
     Enum.reduce(state, %{}, fn {player_or_team, _v}, new_state ->
