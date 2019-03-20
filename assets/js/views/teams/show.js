@@ -8,10 +8,12 @@ export default class View extends MainView {
   }
 
   buildStatus(teamData) {
-    teamData.players.reduce((statusObj, player) => {
-      statusObj[player] = "pending"
-    }, this.status)
-    console.log(this.status)
+    this.status = Object.assign(this.status, teamData.players)
+    Object.entries(this.status).forEach(entry => {
+      let player_elem = document.getElementById(entry[0])
+      var elem = player_elem.getElementsByClassName("player-status")[0]
+      this.changeStatus(entry[1], elem)
+    })
   }
 
   changeStatus(statusKey, domElem) {

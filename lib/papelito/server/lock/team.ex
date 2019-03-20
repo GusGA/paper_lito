@@ -5,7 +5,6 @@ defmodule Papelito.Server.Lock.Team do
   @timeout :timer.hours(1)
 
   def start_link(team_id, game_name) do
-    IO.inspect(team_id)
     GenServer.start_link(__MODULE__, [team_id, game_name], name: via_tuple(team_id))
   end
 
@@ -16,7 +15,7 @@ defmodule Papelito.Server.Lock.Team do
   def init([team_id, game_name]) do
     summary = Papelito.GameManager.summary(game_name)
     team = summary.game.teams[team_id]
-    state = build_lock(team_id, team.players) |> IO.inspect()
+    state = build_lock(team_id, team.players)
     Logger.info("Spawned lock process named #{team_id}")
     {:ok, state, @timeout}
   end

@@ -11,12 +11,12 @@ defmodule Papelito.Supervisor.Status do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
 
-  def start_status_server({team_id, server_type}) do
+  def start_status_server({team_id, server_type, game_name}) do
     server = server_type(server_type)
 
     child_spec = %{
       id: server,
-      start: {server, :start_link, [team_id]},
+      start: {server, :start_link, [team_id, game_name]},
       restart: :transient
     }
 
@@ -27,9 +27,9 @@ defmodule Papelito.Supervisor.Status do
     Papelito.Server.Status.Team
   end
 
-  def server_type(:game_status) do
-    Papelito.Server.Status.Game
-  end
+  # def server_type(:game_status) do
+  #   Papelito.Server.Status.Game
+  # end
 
   def child_spec(opts) do
     %{

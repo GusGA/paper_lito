@@ -2,8 +2,7 @@ defmodule PapelitoWeb.PlayersStatusChannel do
   use PapelitoWeb, :channel
 
   def join("players_status:" <> team_id, %{"game_id" => game_id} = payload, socket) do
-    summary = Papelito.GameManager.summary(game_id)
-    team = summary.game.teams[team_id]
+    team = Papelito.Server.Status.Team.full_status(team_id) |> IO.inspect()
     {:ok, team, socket}
   end
 

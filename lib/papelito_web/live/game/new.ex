@@ -127,8 +127,9 @@ defmodule PapelitoWeb.GameLive.New do
   defp create_game(sorted_teams) do
     {:name, name} = Papelito.GameManager.new_game()
     Papelito.GameManager.add_teams(name, sorted_teams)
+    summary = Papelito.GameManager.summary(name)
 
-    %{game_name: name, summary: Papelito.GameManager.summary(name)}
+    %{game_name: name, summary: summary}
   end
 
   def terminate(_reason, _socket) do
