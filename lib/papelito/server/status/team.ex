@@ -20,6 +20,22 @@ defmodule Papelito.Server.Status.Team do
 
   ## Client Api ##
 
+  def update_player(team_name, player_name, status) do
+    # cast
+  end
+
+  def update_team(team_name, status) do
+    # cast
+  end
+
+  def player_status(team_name, player_name) do
+    # call
+  end
+
+  def team_status(team_name) do
+    # call
+  end
+
   ## Server Api ##
 
   ## Helper functions ##
