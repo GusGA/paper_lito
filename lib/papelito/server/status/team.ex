@@ -76,7 +76,7 @@ defmodule Papelito.Server.Status.Team do
     {:noreply, new_state, @timeout}
   end
 
-  def handle_cast({:update_team, {team_name, status}}, state) do
+  def handle_cast({:update_team, {_team_name, status}}, state) do
     {:noreply, update_team_status(state, status), @timeout}
   end
 
