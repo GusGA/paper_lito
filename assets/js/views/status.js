@@ -11,13 +11,9 @@ export default {
       classRemove: "bg-success"
     }
   },
-  change: function (statusKey, nodeElem, callback = null) {
+  change: function (statusKey, nodeElem) {
     nodeElem.classList.remove(this.status[statusKey].classRemove)
     nodeElem.classList.add(this.status[statusKey].classAdd)
     nodeElem.innerText = this.status[statusKey].text
-
-    if (typeof callback === "function") {
-      callback()
-    }
   }
 }

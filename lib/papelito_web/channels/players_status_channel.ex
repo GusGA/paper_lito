@@ -12,16 +12,6 @@ defmodule PapelitoWeb.PlayersStatusChannel do
   end
 
   def handle_in("check_team_status", %{"game_id" => game_name, "team_id" => team_id}, socket) do
-    team_status = Papelito.Server.Status.Team.full_status(team_id)
-
-    case Enum.all?(team_status.players, fn {_k, v} -> v == "done" end) do
-      true ->
-        PapelitoWeb.TeamStatusChannel.broadcast_update_status(team_id, game_name, "done")
-
-      _ ->
-        nil
-    end
-
     {:noreply, socket}
   end
 

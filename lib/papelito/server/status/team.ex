@@ -68,25 +68,10 @@ defmodule Papelito.Server.Status.Team do
 
   def handle_cast({:update_player, {team_name, player_name, status}}, state) do
     new_state = update_player_status(state, player_name, status)
-
-    PapelitoWeb.PlayersStatusChannel.broadcast_update_status(
-      team_name,
-      player_name,
-      Map.get(new_state.players, player_name)
-    )
-
     {:noreply, new_state, @timeout}
   end
 
   def handle_cast({:update_team, {team_name, status}}, state) do
-    new_state = update_team_status(state, status)
-
-    PapelitoWeb.TeamStatusChannel.broadcast_update_status(
-      team_name,
-      state.game_name,
-      Map.get(new_state, :team_status)
-    )
-
     {:noreply, update_team_status(state, status), @timeout}
   end
 

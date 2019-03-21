@@ -24,7 +24,6 @@ export default class View extends MainView {
       })
 
     channel.on("update_teams_status", payload => {
-      console.log(payload)
       let team_elem = document.getElementById(payload.team)
       var elem = team_elem.getElementsByClassName("team-status")[0]
       status.change(payload.status, elem)
