@@ -25,7 +25,7 @@ defmodule Papelito.Server.Status.Team do
 
   def init([team_id, game_name]) do
     summary = Papelito.GameManager.summary(game_name)
-    state = build_status_state(summary.game.teams[team_id], game_name) |> IO.inspect()
+    state = build_status_state(summary.game.teams[team_id], game_name)
     Logger.info("Spawned team status process named #{team_id}")
     {:ok, state, @timeout}
   end

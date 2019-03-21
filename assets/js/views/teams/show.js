@@ -11,6 +11,16 @@ export default class View extends MainView {
       status.change(entry[1], elem)
     })
   }
+
+  checkTeamStatus(game_id, team_id, channel) {
+    channel.push("check_team_status", { game_id: game_id, team_id: team_id })
+      .receive("ok", data => {
+        this.buildStatus(data)
+      })
+      .receive("error", res => {
+        console.log(`Unable to check ${team_id} status`)
+      })
+  }
   mount() {
     super.mount();
     var game_id = document.getElementById("team_show").getAttribute("data-game-id")
@@ -29,7 +39,7 @@ export default class View extends MainView {
     channel.on("update_status", payload => {
       let player_elem = document.getElementById(payload.player)
       var elem = player_elem.getElementsByClassName("player-status")[0]
-      this.change(payload.status, elem)
+      status.change(payload.status, elem, this.checkTeamStatus(game_id, team_id, channel))
     })
   }
 

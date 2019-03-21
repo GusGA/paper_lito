@@ -13,7 +13,7 @@ export default class View extends MainView {
   mount() {
     super.mount();
     var game_id = document.getElementById("game-id").getAttribute("data-game-id")
-    let topic = "team_status:" + game_id
+    let topic = `team_status:${game_id}`
     let channel = socket.channel(topic, {})
     channel.join()
       .receive("ok", data => {
