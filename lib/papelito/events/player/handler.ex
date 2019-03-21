@@ -6,8 +6,13 @@ defmodule Papelito.Events.Player.Handler do
     Papelito.Events.Player.Manager.register(__MODULE__, nil)
   end
 
-  def handle_event({:update, {team_name, player_name, status}}, _) do
+  def handle_event({:update_player_status, {team_name, player_name, status}}, _) do
     StatusServer.update_player(team_name, player_name, status)
+    {:ok, nil}
+  end
+
+  def handle_event({:update_team_status, {team_name, status}}, _) do
+    StatusServer.update_team(team_name, status)
     {:ok, nil}
   end
 end

@@ -6,7 +6,9 @@ defmodule Papelito.Server.Status.Team do
   defmodule State do
     @derive Jason.Encoder
     defstruct team_status: "",
-              players: %{}
+              players: %{},
+              game_name: "",
+              team_id: ""
   end
 
   alias Papelito.Model.Team
@@ -23,7 +25,7 @@ defmodule Papelito.Server.Status.Team do
 
   def init([team_id, game_name]) do
     summary = Papelito.GameManager.summary(game_name)
-    state = build_status_state(summary.game.teams[team_id]) |> IO.inspect()
+    state = build_status_state(summary.game.teams[team_id], game_name) |> IO.inspect()
     Logger.info("Spawned team status process named #{team_id}")
     {:ok, state, @timeout}
   end
@@ -76,19 +78,27 @@ defmodule Papelito.Server.Status.Team do
     {:noreply, new_state, @timeout}
   end
 
-  def handle_cast({:update_team, {_team_name, status}}, state) do
+  def handle_cast({:update_team, {team_name, status}}, state) do
+    new_state = update_team_status(state, status)
+
+    PapelitoWeb.TeamStatusChannel.broadcast_update_status(
+      team_name,
+      state.game_name,
+      Map.get(new_state, :team_status)
+    )
+
     {:noreply, update_team_status(state, status), @timeout}
   end
 
   ## Helper functions ##
 
-  defp build_status_state(%Team{} = team) do
+  defp build_status_state(%Team{} = team, game_name) do
     players =
       Enum.reduce(team.players, %{}, fn name, players ->
         Map.put(players, name, "pending")
       end)
 
-    %State{team_status: "waiting", players: players}
+    %State{team_status: "pending", players: players, game_name: game_name, team_id: team.id}
   end
 
   defp update_player_status(state, player_name, status) do

@@ -1,15 +1,21 @@
 defmodule PapelitoWeb.TeamStatusChannel do
   use PapelitoWeb, :channel
 
-  def join("team_status:" <> game_name, payload, socket) do
+  def join("team_status:" <> game_name, _payload, socket) do
     summary = Papelito.GameManager.summary(game_name)
     payload = fetch_team_status(summary.game.teams)
     {:ok, payload, socket}
   end
 
+  def broadcast_update_status(team_id, game_name, status) do
+    payload = %{"team" => team_id, "status" => status}
+    PapelitoWeb.Endpoint.broadcast("team_status:#{game_name}", "update_teams_status", payload)
+  end
+
   defp fetch_team_status(teams) do
-    Enum.map(teams, fn team ->
-      Task.async(fn -> Papelito.Server.Status.Team.full_status(team.id) end)
+    Map.keys(teams)
+    |> Enum.map(fn team_id ->
+      Task.async(fn -> Papelito.Server.Status.Team.full_status(team_id) end)
     end)
     |> Enum.map(&Task.await/1)
   end

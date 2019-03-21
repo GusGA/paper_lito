@@ -1,4 +1,4 @@
-<div class="row justify-content-md-center" data-game-id=<%= @game_name %>>
+<div class="row justify-content-md-center" id="game-id" data-game-id=<%= @game_name %>>
   <div class="mt-2 col-12 text-center">
     <h4 class="display">
       <%= @game_name %>
@@ -11,7 +11,7 @@
           <li class="list-group-item active d-flex justify-content-between align-items-center mt-1" id=<%= team.id %>>
             <%= team.name %>
             <a class="btn btn-success btn-sm" href="/games/<%= @game_name %>/teams/<%= team.id %>">Add Papers</a>
-            <div class="d-inline p-2 bg-warning text-white team-status">Waiting</div>
+            <div class="d-inline p-2 bg-warning text-white team-status">Pending</div>
           </li>
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <%= Enum.join(team.players, ", ") %>

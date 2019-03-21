@@ -1,37 +1,15 @@
 import MainView from "../main";
 import socket from "../../socket"
+import status from "../status"
 
 export default class View extends MainView {
-  constructor() {
-    super()
-    this.status = {}
-  }
 
   buildStatus(teamData) {
-    this.status = Object.assign(this.status, teamData.players)
-    Object.entries(this.status).forEach(entry => {
+    Object.entries(teamData.players).forEach(entry => {
       let player_elem = document.getElementById(entry[0])
       var elem = player_elem.getElementsByClassName("player-status")[0]
-      this.changeStatus(entry[1], elem)
+      status.change(entry[1], elem)
     })
-  }
-
-  changeStatus(statusKey, domElem) {
-    let status = {
-      done: {
-        classAdd: "bg-success",
-        text: "Done",
-        classRemove: "bg-warning"
-      },
-      pending: {
-        classAdd: "bg-warning",
-        text: "Pending",
-        classRemove: "bg-success"
-      }
-    }
-    domElem.classList.remove(status[statusKey].classRemove)
-    domElem.classList.add(status[statusKey].classAdd)
-    domElem.innerText = status[statusKey].text
   }
   mount() {
     super.mount();
@@ -51,7 +29,7 @@ export default class View extends MainView {
     channel.on("update_status", payload => {
       let player_elem = document.getElementById(payload.player)
       var elem = player_elem.getElementsByClassName("player-status")[0]
-      this.changeStatus(payload.status, elem)
+      this.change(payload.status, elem)
     })
   }
 
