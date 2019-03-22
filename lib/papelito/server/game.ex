@@ -6,17 +6,18 @@ defmodule Papelito.Server.Game do
 
   @timeout :timer.hours(1)
 
-  def start_link(game_name) do
+  def start_link(game_name, papers_per_player) do
     name = via_tuple(game_name)
-    GenServer.start_link(__MODULE__, game_name, name: name)
+    GenServer.start_link(__MODULE__, [game_name, papers_per_player], name: name)
   end
 
   defp via_tuple(game_name) do
     {:via, Registry, {:game_registry, game_name}}
   end
 
-  def init(game_name) do
+  def init([game_name, papers_per_player]) do
     state = GameStorage.fetch_game(game_name)
+    state = Map.put(state, :papers_per_player, papers_per_player)
     Logger.info("Spawned game process named #{game_name}")
     {:ok, state, @timeout}
   end
@@ -40,6 +41,10 @@ defmodule Papelito.Server.Game do
 
   def summary(game_name) do
     GenServer.call(via_tuple(game_name), :summary)
+  end
+
+  def papers_per_player(game_name) do
+    GenServer.call(via_tuple(game_name), :papers_per_player)
   end
 
   def next_team(game_name) do
@@ -91,6 +96,11 @@ defmodule Papelito.Server.Game do
   def handle_call(:summary, _from, state) do
     summary = GamePlay.summary(state)
     {:reply, summary, state, @timeout}
+  end
+
+  def handle_call(:papers_per_player, _from, state) do
+    papers_per_player = GamePlay.papers_per_player(state)
+    {:reply, papers_per_player, state, @timeout}
   end
 
   def handle_call(:next_team, _from, state) do

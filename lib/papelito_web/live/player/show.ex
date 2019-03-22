@@ -1,6 +1,7 @@
 defmodule PapelitoWeb.PlayerLive.Show do
   use Phoenix.LiveView
   alias PapelitoWeb.Router.Helpers, as: Routes
+  alias Papelito.Server.Lock.Team, as: LockServer
   alias Papelito.GameManager
 
   def mount(
@@ -13,9 +14,10 @@ defmodule PapelitoWeb.PlayerLive.Show do
         },
         socket
       ) do
-    case GameManager.alive?(game_id) do
+    case GameManager.alive?(game_id) && !LockServer.player_locked?(team_id, player_name) do
       true ->
         team_data = fetch_team_summary(game_id, team_id)
+        max_papers = max_papers(game_id)
 
         {:ok,
          assign(
@@ -25,7 +27,8 @@ defmodule PapelitoWeb.PlayerLive.Show do
              player_name: player_name,
              team_name: team_data.name,
              game_id: game_id,
-             team_id: team_id
+             team_id: team_id,
+             max_papers: max_papers
            }
          )}
 
@@ -59,7 +62,8 @@ defmodule PapelitoWeb.PlayerLive.Show do
          player_name: socket.assigns.player_name,
          team_name: socket.assigns.team_name,
          game_id: socket.assigns.game_id,
-         team_id: socket.assigns.team_id
+         team_id: socket.assigns.team_id,
+         max_papers: socket.assigns.max_papers
        }
      )}
   end
@@ -90,6 +94,8 @@ defmodule PapelitoWeb.PlayerLive.Show do
           {socket.assigns.team_id, socket.assigns.player_name, "done"}
         )
 
+        Papelito.LockManager.lock_player(socket.assigns.team_id, socket.assigns.player_name)
+
         {:stop,
          socket
          |> put_flash(:info, "The papers were added sucessfully")
@@ -114,5 +120,9 @@ defmodule PapelitoWeb.PlayerLive.Show do
   defp fetch_team_summary(game_id, team_id) do
     summary = Papelito.GameManager.summary(game_id)
     summary.game.teams[team_id]
+  end
+
+  defp max_papers(game_id) do
+    Papelito.GameManager.papers_per_player(game_id)
   end
 end

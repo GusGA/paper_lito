@@ -5,17 +5,21 @@ defmodule Papelito.GameManager do
   alias Papelito.Model.{Game, GameLog}
   alias Papelito.Repo
 
-  def new_game do
+  def new_game(papers_per_player) do
     game_name = Haikunator.build()
 
-    case Papelito.Supervisor.GameSupervisor.start_game(game_name) do
+    case Papelito.Supervisor.GameSupervisor.start_game(game_name, papers_per_player) do
       {:ok, _} -> {:name, game_name}
-      {:error, _} -> new_game
+      {:error, _} -> new_game(papers_per_player)
     end
   end
 
   def summary(game_name) do
     Papelito.Server.Game.summary(game_name)
+  end
+
+  def papers_per_player(game_name) do
+    Papelito.Server.Game.papers_per_player(game_name)
   end
 
   def add_teams(game_name, teams) when is_list(teams) do

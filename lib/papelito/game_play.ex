@@ -11,7 +11,8 @@ defmodule Papelito.GamePlay do
             round: 0,
             current_team: nil,
             teams_order: [],
-            papers_left: 0
+            papers_left: 0,
+            papers_per_player: 4
 
   @type t :: %__MODULE__{
           game: GameData.t(),
@@ -116,5 +117,9 @@ defmodule Papelito.GamePlay do
       game: game_play.game,
       round: game_play.round
     }
+  end
+
+  def papers_per_player(%GamePlay{} = game_play) do
+    game_play.papers_per_player
   end
 end

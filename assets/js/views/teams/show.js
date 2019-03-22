@@ -5,13 +5,22 @@ import status from "../status"
 export default class View extends MainView {
 
   buildStatus(teamData) {
-    Object.entries(teamData.players).forEach(entry => {
-      let player_elem = document.getElementById(entry[0])
+    Object.keys(teamData.players).forEach(playerName => {
+      var player_elem = document.getElementById(playerName)
       var elem = player_elem.getElementsByClassName("player-status")[0]
-      status.change(entry[1], elem)
+      status.change(teamData.players[playerName], elem)
+      this.hideActionButton(playerName, teamData.players[playerName], player_elem)
     })
   }
 
+  hideActionButton(playerName, status, node) {
+    var actionNode = node.querySelectorAll(`a.${playerName}`)[0]
+    if (status === "done") {
+      actionNode.style.display = 'none'
+    } else if (status === "pending") {
+      actionNode.style.display = 'inline-block'
+    }
+  }
 
   mount() {
     super.mount();
@@ -32,6 +41,7 @@ export default class View extends MainView {
     channel.on("update_status", payload => {
       let player_elem = document.getElementById(payload.player)
       var elem = player_elem.getElementsByClassName("player-status")[0]
+      this.hideActionButton(payload.player, payload.status, elem)
       status.change(payload.status, elem)
     })
   }

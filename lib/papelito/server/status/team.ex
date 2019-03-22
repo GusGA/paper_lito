@@ -93,6 +93,14 @@ defmodule Papelito.Server.Status.Team do
     {:noreply, new_state}
   end
 
+  def handle_info(:timeout, state) do
+    {:stop, {:shutdown, :timeout}, state}
+  end
+
+  def terminate({:shutdown, :timeout}, _state) do
+    :ok
+  end
+
   ## Helper functions ##
 
   defp build_status_state(%Team{} = team, game_name) do

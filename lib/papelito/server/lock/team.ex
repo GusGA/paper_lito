@@ -22,11 +22,11 @@ defmodule Papelito.Server.Lock.Team do
 
   ## Client functions
 
-  def team_unlocked?(team_id) do
+  def team_locked?(team_id) do
     GenServer.call(via_tuple(team_id), {:team_unlocked?, team_id})
   end
 
-  def player_unlocked?(team_id, player_name) do
+  def player_locked?(team_id, player_name) do
     GenServer.call(via_tuple(team_id), {:player_unlocked?, player_name})
   end
 
@@ -86,6 +86,14 @@ defmodule Papelito.Server.Lock.Team do
 
   def handle_cast({:unlock_team, team_id}, state) do
     {:noreply, update_lock(state, team_id, false), @timeout}
+  end
+
+  def handle_info(:timeout, state) do
+    {:stop, {:shutdown, :timeout}, state}
+  end
+
+  def terminate({:shutdown, :timeout}, _state) do
+    :ok
   end
 
   ## Helper functions

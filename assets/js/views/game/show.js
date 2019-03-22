@@ -36,7 +36,7 @@ export default class View extends MainView {
     channel.on("update_teams_status", payload => {
       let team_elem = document.getElementById(payload.team_id)
       var elem = team_elem.getElementsByClassName("team-status")[0]
-      hideActionButton(payload, team_elem)
+      this.hideActionButton(payload, team_elem)
       status.change(payload.team_status, elem)
     })
 

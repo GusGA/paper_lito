@@ -11,7 +11,8 @@ defmodule PapelitoWeb.GameLive.New do
          changeset: Params.changeset(%Params{}),
          players: [],
          teams_qty: nil,
-         sorted_teams: nil
+         sorted_teams: nil,
+         papers_per_player: 4
        }
      )}
   end
@@ -20,19 +21,25 @@ defmodule PapelitoWeb.GameLive.New do
 
   def handle_event(
         "teams_qty_change",
-        %{"params" => %{"teams_qty" => teams_qty}} = _params,
+        %{"params" => %{"teams_qty" => teams_qty}} = params,
         socket
       ) do
     qty = set_team_qty(teams_qty, socket.assigns.changeset.data)
     players = socket.assigns.players
+    papers_per_player = socket.assigns.papers_per_player
 
     {:noreply,
      assign(
        socket,
        %{
-         changeset: Params.changeset(%Params{}, %{players: players, teams_qty: qty}),
+         changeset:
+           Params.changeset(%Params{}, %{
+             players: players,
+             teams_qty: qty
+           }),
          players: players,
          teams_qty: qty,
+         papers_per_player: papers_per_player,
          sorted_teams: socket.assigns.sorted_teams
        }
      )}
@@ -84,21 +91,28 @@ defmodule PapelitoWeb.GameLive.New do
     players = socket.assigns.players
     teams_qty = socket.assigns.teams_qty
     sorted_teams = Papelito.Utils.TeamSorter.perform(players, teams_qty)
+    papers_per_player = socket.assigns.papers_per_player
 
     {:noreply,
      assign(
        socket,
        %{
-         changeset: Params.changeset(%Params{}, %{players: players, teams_qty: teams_qty}),
+         changeset:
+           Params.changeset(%Params{}, %{
+             players: players,
+             teams_qty: teams_qty,
+             papers_per_player: papers_per_player
+           }),
          players: players,
          teams_qty: teams_qty,
-         sorted_teams: sorted_teams
+         sorted_teams: sorted_teams,
+         papers_per_player: papers_per_player
        }
      )}
   end
 
   def handle_event("create_game", _value, socket) do
-    game_data = create_game(socket.assigns.sorted_teams)
+    game_data = create_game(socket.assigns.sorted_teams, socket.assigns.papers_per_player)
 
     {:stop,
      socket
@@ -124,8 +138,8 @@ defmodule PapelitoWeb.GameLive.New do
     end
   end
 
-  defp create_game(sorted_teams) do
-    {:name, name} = Papelito.GameManager.new_game()
+  defp create_game(sorted_teams, papers_per_player) do
+    {:name, name} = Papelito.GameManager.new_game(papers_per_player)
     Papelito.GameManager.add_teams(name, sorted_teams)
     summary = Papelito.GameManager.summary(name)
 

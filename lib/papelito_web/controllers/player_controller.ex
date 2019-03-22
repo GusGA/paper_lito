@@ -11,10 +11,17 @@ defmodule PapelitoWeb.PlayerController do
 
       true ->
         summary = Papelito.GameManager.summary(game_name)
+        max_papers = Papelito.GameManager.papers_per_player(game_name)
         team = summary.game.teams[team_id]
 
         conn
-        |> render("show.html", game_name: game_name, team: team, papers: [])
+        |> render(
+          "show.html",
+          game_name: game_name,
+          team: team,
+          papers: [],
+          max_papers: max_papers
+        )
     end
   end
 end

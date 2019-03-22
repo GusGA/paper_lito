@@ -6,10 +6,11 @@ defmodule Papelito.Params do
   schema "params" do
     field(:players, {:array, :string})
     field(:teams_qty, :integer)
+    field(:papers_per_player, :integer)
   end
 
   def changeset(%Params{} = params, attrs \\ %{}) do
     params
-    |> cast(attrs, [:players, :teams_qty])
+    |> cast(attrs, [:players, :teams_qty, :papers_per_player])
   end
 end

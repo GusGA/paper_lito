@@ -7,8 +7,8 @@ defmodule Papelito.LockManager do
     LockSupervisor.start_lock({team_id, :team_lock, game_id})
   end
 
-  def player_unlocked?(team_id, player_name) do
-    TeamLock.player_unlocked?(team_id, player_name)
+  def player_locked?(team_id, player_name) do
+    TeamLock.player_locked?(team_id, player_name)
   end
 
   def lock_player(team_id, player_name) do

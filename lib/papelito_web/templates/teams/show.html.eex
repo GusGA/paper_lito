@@ -9,7 +9,7 @@
           <li class="list-group-item" id=<%= player %>>
             <%= player %>
               <span class="float-right">
-                <%= link("Add paper", to: Routes.live_path(@conn, PapelitoWeb.PlayerLive.Show, @game_name, @team.id, player), class: "btn btn-primary") %>
+                <%= link("Add paper", to: Routes.live_path(@conn, PapelitoWeb.PlayerLive.Show, @game_name, @team.id, player), class: "btn btn-primary #{player}") %>
                 <div class="d-inline p-2 bg-warning text-white player-status">Pending</div>
               </span>
             </li>
