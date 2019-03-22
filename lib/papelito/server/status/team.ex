@@ -68,11 +68,29 @@ defmodule Papelito.Server.Status.Team do
 
   def handle_cast({:update_player, {team_name, player_name, status}}, state) do
     new_state = update_player_status(state, player_name, status)
+    send(self(), :all_players_done?)
     {:noreply, new_state, @timeout}
   end
 
   def handle_cast({:update_team, {team_name, status}}, state) do
     {:noreply, update_team_status(state, status), @timeout}
+  end
+
+  def handle_info(:all_players_done?, state) do
+    new_state =
+      case Enum.all?(state.players, fn {_k, v} -> v == "done" end) do
+        true ->
+          Papelito.Events.Team.Manager.broadcast_team_status(
+            {state.team_id, state.game_name, "done"}
+          )
+
+          update_team_status(state, "done")
+
+        _ ->
+          state
+      end
+
+    {:noreply, new_state}
   end
 
   ## Helper functions ##

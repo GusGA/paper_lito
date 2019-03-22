@@ -11,10 +11,6 @@ defmodule PapelitoWeb.PlayersStatusChannel do
     PapelitoWeb.Endpoint.broadcast("players_status:#{team_id}", "update_status", payload)
   end
 
-  def handle_in("check_team_status", %{"game_id" => game_name, "team_id" => team_id}, socket) do
-    {:noreply, socket}
-  end
-
   def handle_out(event, payload, socket) do
     push(socket, event, payload)
     {:noreply, socket}

@@ -33,8 +33,7 @@ defmodule Papelito.Application do
       supervisor(PapelitoWeb.Endpoint, []),
       # Start your own worker by calling: Papelito.Worker.start_link(arg1, arg2, arg3)
       # worker(Papelito.Worker, [arg1, arg2, arg3]),
-      supervisor(Papelito.Supervisor.Root, [:ok]),
-      Papelito.Events.Player.Manager.child_spec()
+      supervisor(Papelito.Supervisor.Root, [:ok])
     ]
 
     # Game persistency
@@ -43,10 +42,7 @@ defmodule Papelito.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Papelito.Supervisor]
-
-    with {:ok, pid} <- Supervisor.start_link(children, opts),
-         :ok <- Papelito.Events.Player.Handler.register_with_manager(),
-         do: {:ok, pid}
+    Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration

@@ -18,6 +18,7 @@ export default class View extends MainView {
     channel.join()
       .receive("ok", data => {
         this.buildStatus(data)
+        console.log(`Join to channel ${topic}`)
       })
       .receive("error", _resp => {
         console.log("Unable to join topic", _resp)
