@@ -7,8 +7,17 @@ export default class View extends MainView {
     teamsData.forEach(element => {
       let team_elem = document.getElementById(element.team_id)
       var node_elem = team_elem.getElementsByClassName("team-status")[0]
+      this.hideActionButton(element, team_elem)
       status.change(element.team_status, node_elem)
     });
+  }
+
+  hideActionButton(payload, node) {
+    if (payload.team_status === "done") {
+      node.querySelectorAll(`a.${payload.team_id}`)[0].style.display = 'none'
+    } else if (payload.team_status === "pending") {
+      node.querySelectorAll(`a.${payload.team_id}`)[0].style.display = 'block'
+    }
   }
   mount() {
     super.mount();
@@ -25,9 +34,10 @@ export default class View extends MainView {
       })
 
     channel.on("update_teams_status", payload => {
-      let team_elem = document.getElementById(payload.team)
+      let team_elem = document.getElementById(payload.team_id)
       var elem = team_elem.getElementsByClassName("team-status")[0]
-      status.change(payload.status, elem)
+      hideActionButton(payload, team_elem)
+      status.change(payload.team_status, elem)
     })
 
   }

@@ -10,8 +10,7 @@ defmodule PapelitoWeb.TeamStatusChannel do
   end
 
   def broadcast_update_status(team_id, game_name, status) do
-    IO.inspect("hola desde el broadcast_update_status del channel")
-    payload = %{"team" => team_id, "status" => status}
+    payload = %{"team_id" => team_id, "team_status" => status}
     PapelitoWeb.Endpoint.broadcast("team_status:#{game_name}", "update_teams_status", payload)
   end
 

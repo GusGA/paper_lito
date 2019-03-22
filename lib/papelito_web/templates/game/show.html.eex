@@ -10,7 +10,7 @@
         <div>
           <li class="list-group-item active d-flex justify-content-between align-items-center mt-1" id=<%= team.id %>>
             <%= team.name %>
-            <a class="btn btn-success btn-sm" href="/games/<%= @game_name %>/teams/<%= team.id %>">Add Papers</a>
+            <a class="btn btn-success btn-sm <%= team.id %>" href="/games/<%= @game_name %>/teams/<%= team.id %>">Add Papers</a>
             <div class="d-inline p-2 bg-warning text-white team-status">Pending</div>
           </li>
           <li class="list-group-item d-flex justify-content-between align-items-center">
