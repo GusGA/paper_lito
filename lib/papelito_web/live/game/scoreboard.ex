@@ -14,11 +14,19 @@ defmodule PapelitoWeb.GameLive.Scoreboard do
       true ->
         summary = Papelito.GameManager.summary(game_id)
         statuses = teams_status(summary.game.teams)
+        Papelito.Server.Game.save_scoreboard_pid(game_id, self())
         {:ok, assign(socket, %{game_name: game_id, summary: summary, statuses: statuses})}
     end
   end
 
   def render(assigns), do: PapelitoWeb.GameView.render("scoreboard.html", assigns)
+
+  def handle_info(:update_scoreboard, socket) do
+    game_id = socket.assigns.game_name
+    summary = Papelito.GameManager.summary(game_id)
+    statuses = teams_status(summary.game.teams)
+    {:noreply, assign(socket, %{game_name: game_id, summary: summary, statuses: statuses})}
+  end
 
   defp teams_status(teams) do
     statues =

@@ -18,6 +18,7 @@ defmodule Papelito.Server.Game do
   def init([game_name, papers_per_player]) do
     state = GameStorage.fetch_game(game_name)
     state = Map.put(state, :papers_per_player, papers_per_player)
+    state = Map.put(state, :scoreboard_pid, nil)
     Logger.info("Spawned game process named #{game_name}")
     {:ok, state, @timeout}
   end
@@ -83,6 +84,10 @@ defmodule Papelito.Server.Game do
     GenServer.cast(via_tuple(game_name), {:add_point, team_name})
   end
 
+  def save_scoreboard_pid(game_name, sb_pid) do
+    GenServer.cast(via_tuple(game_name), {:save_scoreboard_pid, sb_pid})
+  end
+
   ## ------------------##
   ##    Server API    ##
   ## ------------------##
@@ -106,12 +111,14 @@ defmodule Papelito.Server.Game do
   def handle_call(:next_team, _from, state) do
     {current_team, new_state} = GamePlay.next_team(state)
     GameStorage.save_game(game_name_from_registry(), new_state)
+    send(state.scoreboard_pid, :update_scoreboard)
     {:reply, current_team, new_state, @timeout}
   end
 
   def handle_call(:next_round, _from, state) do
     {next_round, new_state} = GamePlay.next_round(state)
     GameStorage.save_game(game_name_from_registry(), new_state)
+    send(state.scoreboard_pid, :update_scoreboard)
     {:reply, next_round, new_state, @timeout}
   end
 
@@ -153,6 +160,12 @@ defmodule Papelito.Server.Game do
   def handle_cast({:add_point, team_name}, state) do
     new_state = GamePlay.add_point(state, team_name)
     GameStorage.save_game(game_name_from_registry(), new_state)
+    send(state.scoreboard_pid, :update_scoreboard)
+    {:noreply, new_state, @timeout}
+  end
+
+  def handle_cast({:save_scoreboard_pid, sb_pid}, state) do
+    new_state = Map.put(state, :scoreboard_pid, sb_pid)
     {:noreply, new_state, @timeout}
   end
 
