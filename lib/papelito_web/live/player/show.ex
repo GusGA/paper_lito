@@ -14,7 +14,8 @@ defmodule PapelitoWeb.PlayerLive.Show do
         },
         socket
       ) do
-    case GameManager.alive?(game_id) && !LockServer.player_locked?(team_id, player_name) do
+    case GameManager.alive?(game_id) && part_of_team?(game_id, team_id, player_name) &&
+           !LockServer.player_locked?(team_id, player_name) do
       true ->
         team_data = fetch_team_summary(game_id, team_id)
         max_papers = max_papers(game_id)
@@ -35,8 +36,16 @@ defmodule PapelitoWeb.PlayerLive.Show do
       false ->
         {:stop,
          socket
-         |> put_flash(:error, "The game does not exist, please create a new one")
-         |> redirect(to: Routes.page_path(%Plug.Conn{}, :index))}
+         |> put_flash(:info, "The papers were added sucessfully")
+         |> redirect(
+           to:
+             Routes.teams_path(
+               %Plug.Conn{},
+               :show,
+               game_id,
+               team_id
+             )
+         )}
     end
   end
 
@@ -124,5 +133,10 @@ defmodule PapelitoWeb.PlayerLive.Show do
 
   defp max_papers(game_id) do
     Papelito.GameManager.papers_per_player(game_id)
+  end
+
+  def part_of_team?(game_id, team_id, player_name) do
+    team = fetch_team_summary(game_id, team_id)
+    Enum.member?(team.players, player_name)
   end
 end

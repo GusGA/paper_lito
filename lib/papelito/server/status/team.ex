@@ -66,13 +66,13 @@ defmodule Papelito.Server.Status.Team do
     {:reply, state, state, @timeout}
   end
 
-  def handle_cast({:update_player, {team_name, player_name, status}}, state) do
+  def handle_cast({:update_player, {_team_name, player_name, status}}, state) do
     new_state = update_player_status(state, player_name, status)
     send(self(), :all_players_done?)
     {:noreply, new_state, @timeout}
   end
 
-  def handle_cast({:update_team, {team_name, status}}, state) do
+  def handle_cast({:update_team, {_team_name, status}}, state) do
     {:noreply, update_team_status(state, status), @timeout}
   end
 
@@ -83,6 +83,12 @@ defmodule Papelito.Server.Status.Team do
           Papelito.Events.Team.Manager.broadcast_team_status(
             {state.team_id, state.game_name, "done"}
           )
+
+          Enum.each(state.players, fn {player_name, _status} ->
+            spawn(fn ->
+              Papelito.LockManager.lock_player(state.team_id, player_name)
+            end)
+          end)
 
           update_team_status(state, "done")
 

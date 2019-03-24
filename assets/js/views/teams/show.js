@@ -24,8 +24,8 @@ export default class View extends MainView {
 
   mount() {
     super.mount();
-    var game_id = document.getElementById("team_show").getAttribute("data-game-id")
-    var team_id = document.getElementById("team_show").getAttribute("data-team-id")
+    var game_id = document.getElementById("team_show").dataset.gameId
+    var team_id = document.getElementById("team_show").dataset.teamId
     var topic = "players_status:" + team_id
     let channel = socket.channel(topic, { game_id: game_id })
 
@@ -41,7 +41,7 @@ export default class View extends MainView {
     channel.on("update_status", payload => {
       let player_elem = document.getElementById(payload.player)
       var elem = player_elem.getElementsByClassName("player-status")[0]
-      this.hideActionButton(payload.player, payload.status, elem)
+      this.hideActionButton(payload.player, payload.status, player_elem)
       status.change(payload.status, elem)
     })
   }

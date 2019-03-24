@@ -29,10 +29,9 @@ defmodule PapelitoWeb.GameLive.Scoreboard do
   end
 
   defp teams_status(teams) do
-    statues =
-      Map.keys(teams)
-      |> Enum.map(fn id -> Task.async(fn -> [id, StatusServer.team_status(id)] end) end)
-      |> Enum.map(&Task.await/1)
-      |> Enum.reduce(%{}, fn [id, status], acc -> Map.put(acc, id, status) end)
+    Map.keys(teams)
+    |> Enum.map(fn id -> Task.async(fn -> [id, StatusServer.team_status(id)] end) end)
+    |> Enum.map(&Task.await/1)
+    |> Enum.reduce(%{}, fn [id, status], acc -> Map.put(acc, id, status) end)
   end
 end
