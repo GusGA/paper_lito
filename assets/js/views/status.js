@@ -9,6 +9,11 @@ export default {
       classAdd: "bg-warning",
       text: "Pending",
       classRemove: "bg-success"
+    },
+    playing: {
+      classAdd: "bg-info",
+      text: "Playing",
+      classRemove: ["bg-success", "bg-warning"]
     }
   },
   change: function (statusKey, nodeElem) {
