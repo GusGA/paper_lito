@@ -12,23 +12,25 @@ defmodule Papelito.Supervisor.Lock do
   end
 
   def start_lock({team_id, server_type, game_name}) do
-    server = server_type(server_type)
-
-    child_spec = %{
-      id: server,
-      start: {server, :start_link, [team_id, game_name]},
-      restart: :transient
-    }
+    child_spec = child_spec_by_server_type(server_type, game_name, team_id)
 
     DynamicSupervisor.start_child(__MODULE__, child_spec)
   end
 
-  def server_type(:team_lock) do
-    Papelito.Server.Lock.Team
+  def child_spec_by_server_type(:team_lock, game_name, team_id) do
+    %{
+      id: Papelito.Server.Lock.Team,
+      start: {Papelito.Server.Lock.Team, :start_link, [team_id, game_name]},
+      restart: :transient
+    }
   end
 
-  def server_type(:game_lock) do
-    Papelito.Server.Lock.Game
+  def child_spec_by_server_type(:game_lock, game_name, _) do
+    %{
+      id: Papelito.Server.Lock.Game,
+      start: {Papelito.Server.Lock.Game, :start_link, [game_name]},
+      restart: :transient
+    }
   end
 
   def child_spec(opts) do

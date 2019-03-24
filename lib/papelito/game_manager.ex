@@ -103,7 +103,7 @@ defmodule Papelito.GameManager do
   def start_locks(game_name, teams) do
     Enum.map(teams, fn team -> team.key end)
     |> Enum.each(fn team_id ->
-      Papelito.LockManager.start_team_lock(team_id, game_name)
+      Papelito.LockManager.start_locks(team_id, game_name)
       Papelito.Supervisor.Status.start_status_server({team_id, :team_status, game_name})
     end)
   end
