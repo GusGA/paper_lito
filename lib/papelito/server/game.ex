@@ -95,6 +95,8 @@ defmodule Papelito.Server.Game do
   def handle_call(:start, _from, state) do
     new_state = GamePlay.start(state)
     GameStorage.save_game(game_name_from_registry(), new_state)
+    update_team_status(new_state)
+    update_scoreboard(state.scoreboard_pid)
     {:reply, :ok, new_state, @timeout}
   end
 
@@ -111,14 +113,15 @@ defmodule Papelito.Server.Game do
   def handle_call(:next_team, _from, state) do
     {current_team, new_state} = GamePlay.next_team(state)
     GameStorage.save_game(game_name_from_registry(), new_state)
-    send(state.scoreboard_pid, :update_scoreboard)
+    update_team_status(new_state)
+    update_scoreboard(state.scoreboard_pid)
     {:reply, current_team, new_state, @timeout}
   end
 
   def handle_call(:next_round, _from, state) do
     {next_round, new_state} = GamePlay.next_round(state)
     GameStorage.save_game(game_name_from_registry(), new_state)
-    send(state.scoreboard_pid, :update_scoreboard)
+    update_scoreboard(state.scoreboard_pid)
     {:reply, next_round, new_state, @timeout}
   end
 
@@ -160,7 +163,7 @@ defmodule Papelito.Server.Game do
   def handle_cast({:add_point, team_name}, state) do
     new_state = GamePlay.add_point(state, team_name)
     GameStorage.save_game(game_name_from_registry(), new_state)
-    send(state.scoreboard_pid, :update_scoreboard)
+    update_scoreboard(state.scoreboard_pid)
     {:noreply, new_state, @timeout}
   end
 
@@ -190,5 +193,19 @@ defmodule Papelito.Server.Game do
 
   defp game_name_from_registry() do
     Registry.keys(:game_registry, self()) |> List.first()
+  end
+
+  defp update_scoreboard(scoreboard_pid) when is_pid(scoreboard_pid) do
+    send(scoreboard_pid, :update_scoreboard)
+  end
+
+  defp update_team_status(new_state) do
+    Enum.each(new_state.teams_order, fn team ->
+      unless team != new_state.current_team do
+        Papelito.Events.Team.Manager.update_team_status({team, "waiting"})
+      end
+    end)
+
+    Papelito.Events.Team.Manager.update_team_status({new_state.current_team, "playing"})
   end
 end

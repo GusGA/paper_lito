@@ -70,6 +70,14 @@ defmodule Papelito.Server.Lock.Game do
     {:noreply, update_lock(state, :bowl, true), @timeout}
   end
 
+  def handle_cast(:unlock_scoreboard, state) do
+    {:noreply, update_lock(state, :scoreboard, false), @timeout}
+  end
+
+  def handle_cast(:unlock_bowl, state) do
+    {:noreply, update_lock(state, :bowl, false), @timeout}
+  end
+
   def handle_cast(:unlock_all, state) do
     {:noreply, unlock_all_state(state), @timeout}
   end

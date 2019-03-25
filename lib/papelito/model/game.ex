@@ -14,7 +14,6 @@ defmodule Papelito.Model.Game do
     %Game{}
   end
 
-  @spec add_team(Game.t(), String.t()) :: Game.t()
   def add_team(%Game{} = game, team_name) when is_binary(team_name) do
     name = sanitize_team_name(team_name)
     teams = Map.put(game.teams, name, Team.create(team_name))
@@ -40,14 +39,12 @@ defmodule Papelito.Model.Game do
     %Game{game | teams: teams}
   end
 
-  @spec winner(Game.t()) :: Team.t()
   def winner(%Game{} = game) do
     teams = Map.values(game.teams)
     max_score = Enum.map(teams, fn team -> team.score end) |> Enum.max()
     Enum.filter(teams, fn team -> team.score == max_score end)
   end
 
-  @spec add_paper(Game.t(), String.t()) :: Game.t()
   def add_paper(%Game{} = game, paper) when is_binary(paper) do
     %Game{game | papers: [paper | game.papers]}
   end
