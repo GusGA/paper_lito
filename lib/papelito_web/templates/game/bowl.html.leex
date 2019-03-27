@@ -1,38 +1,27 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <title>Papelito game</title>
-</head>
-
-<body></body>
-<div class="container">
-  <div class="jumbotron">
+<div class="jumbotron">
     <h1 class="jumbotron-heading text-center"> Frase del papelito </h1>
   </div>
   <div class="row">
     <div class="col">
       <h2 class="text-center">
-        00 : 59 : 59
+        <%= @timer %>
       </h2>
     </div>
+    <%= if @playing do %>
     <div class="w-100 mt-5"></div>
     <div class="col">
-      <button type="button" class="btn btn-primary btn-lg btn-block p-5">Block level button</button>
+      <button type="button" class="btn btn-primary btn-lg btn-block p-5"  phx-click="pass_paper">Pass</button>
     </div>
     <div class="col">
-      <button type="button" class="btn btn-secondary btn-lg btn-block p-5">Block level button</button>
+      <button type="button" class="btn btn-secondary btn-lg btn-block p-5" phx-click="check_paper">Check</button>
     </div>
+    <% end %>
+    <%= unless @playing do %>
+    <div class="w-100 mt-5"></div>
+    <div class="col">
+      <button type="button" class="btn btn-warning btn-lg btn-block p-5 text-white" phx-click="start_timer">
+      <h3>Start</h3>
+      </button>
+    </div>
+    <% end %>
   </div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-</body>
-
-</html>
