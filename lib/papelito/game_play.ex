@@ -70,7 +70,7 @@ defmodule Papelito.GamePlay do
     %__MODULE__{game_play | game: game}
   end
 
-  @spec fetch_paper(GamePlay.t()) :: {String.t(), GamePlay.t()}
+  @spec fetch_paper(GamePlay.t()) :: GamePlay.t()
   def fetch_paper(%GamePlay{} = game_play) do
     previous_papers =
       Enum.filter([game_play.current_paper | game_play.previous_papers], fn paper ->
@@ -87,6 +87,22 @@ defmodule Papelito.GamePlay do
       end
 
     %__MODULE__{game_play | current_paper: current_paper, previous_papers: previous_papers}
+  end
+
+  @spec pass_paper(GamePlay.t()) :: GamePlay.t()
+  def pass_paper(%GamePlay{} = game_play) do
+    unselected_papers =
+      MapSet.difference(MapSet.new(game_play.game.papers), MapSet.new(game_play.previous_papers))
+
+    unselected_papers = [unselected_papers | game_play.current_paper]
+
+    current_paper =
+      case Enum.any?(unselected_papers) do
+        true -> Enum.random(unselected_papers)
+        _ -> nil
+      end
+
+    %__MODULE__{game_play | current_paper: current_paper}
   end
 
   @spec add_team(GamePlay.t(), String.t()) :: GamePlay.t()

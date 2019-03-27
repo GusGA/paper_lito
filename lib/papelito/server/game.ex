@@ -72,6 +72,10 @@ defmodule Papelito.Server.Game do
     GenServer.call(via_tuple(game_name), :fetch_paper)
   end
 
+  def pass_paper(game_name) do
+    GenServer.call(via_tuple(game_name), :pass_paper)
+  end
+
   def start_round(game_name) do
     GenServer.call(via_tuple(game_name), :next_round)
   end
@@ -140,6 +144,12 @@ defmodule Papelito.Server.Game do
 
   def handle_call(:fetch_paper, _from, state) do
     new_state = GamePlay.fetch_paper(state)
+    GameStorage.save_game(game_name_from_registry(), new_state)
+    {:reply, new_state.current_paper, new_state, @timeout}
+  end
+
+  def handle_call(:pass_paper, _from, state) do
+    new_state = GamePlay.pass_paper(state)
     GameStorage.save_game(game_name_from_registry(), new_state)
     {:reply, new_state.current_paper, new_state, @timeout}
   end

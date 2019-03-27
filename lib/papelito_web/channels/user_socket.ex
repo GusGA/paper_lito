@@ -5,6 +5,7 @@ defmodule PapelitoWeb.UserSocket do
   # channel "room:*", PapelitoWeb.RoomChannel
   channel("players_status:*", PapelitoWeb.PlayersStatusChannel)
   channel("team_status:*", PapelitoWeb.TeamStatusChannel)
+  channel("bowl:*", PapelitoWeb.BowlChannel)
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
   # verification, you can put default assigns into
