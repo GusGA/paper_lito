@@ -4,7 +4,7 @@ defmodule PapelitoWeb.GameLive.Scoreboard do
   alias Papelito.Server.Status.Team, as: StatusServer
 
   def mount(%{path_params: %{"game_id" => game_id}}, socket) do
-    case Papelito.GameManager.alive?(game_id) && !Papelito.LockManager.scoreboard_locked?(game_id) do
+    case Papelito.GameManager.alive?(game_id) do
       false ->
         {:stop,
          socket
@@ -14,8 +14,7 @@ defmodule PapelitoWeb.GameLive.Scoreboard do
       true ->
         summary = Papelito.GameManager.summary(game_id)
         statuses = teams_status(summary.game.teams)
-        Papelito.Server.Game.save_scoreboard_pid(game_id, self())
-        Papelito.LockManager.lock_scoreboard(game_id)
+        Papelito.Events.Team.Manager.subscribe_score_board_live_view(game_id)
         {:ok, assign(socket, %{game_name: game_id, summary: summary, statuses: statuses})}
     end
   end

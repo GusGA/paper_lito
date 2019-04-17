@@ -67,6 +67,7 @@ defmodule PapelitoWeb.GameLive.Bowl do
       0 ->
         playing = false
         current_paper = "Are you ready?"
+        timer = 45
 
       _ ->
         nil

@@ -26,12 +26,12 @@ defmodule PapelitoWeb.GameController do
         |> halt()
 
       true ->
-        game_summary = Papelito.GameManager.summary(game_name)
+        summary = Papelito.GameManager.summary(game_name)
 
         conn
         |> render(
           "bowl.html",
-          game_name: game_id,
+          game_name: game_name,
           current_paper: "Are you ready?",
           summary: summary,
           timer: 45,

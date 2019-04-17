@@ -33,7 +33,8 @@ defmodule Papelito.Application do
       supervisor(PapelitoWeb.Endpoint, []),
       # Start your own worker by calling: Papelito.Worker.start_link(arg1, arg2, arg3)
       # worker(Papelito.Worker, [arg1, arg2, arg3]),
-      supervisor(Papelito.Supervisor.Root, [:ok])
+      supervisor(Papelito.Supervisor.Root, [:ok]),
+      supervisor(Phoenix.PubSub.PG2, [:scoreboard, []])
     ]
 
     # Game persistency
