@@ -12,7 +12,8 @@ defmodule Papelito.GamePlay do
             current_team: nil,
             teams_order: [],
             papers_left: 0,
-            papers_per_player: 4
+            papers_per_player: 4,
+            game_name: nil
 
   @type t :: %__MODULE__{
           game: GameData.t(),
@@ -20,12 +21,13 @@ defmodule Papelito.GamePlay do
           previous_papers: [String.t()],
           round: integer,
           current_team: String.t(),
+          game_name: String.t(),
           teams_order: [String.t()]
         }
 
-  @spec new() :: GamePlay.t()
-  def new do
+  def new(game_name) do
     %__MODULE__{
+      game_name: game_name,
       game: GameData.create()
     }
   end

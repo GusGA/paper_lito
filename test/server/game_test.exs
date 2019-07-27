@@ -12,13 +12,13 @@ defmodule Papelito.Server.GameTest do
   end
 
   test "Init Server" do
-    {:ok, state, _timeout} = Papelito.Server.Game.init(Haikunator.build())
+    {:ok, state, _timeout} = Papelito.Server.Game.init([Haikunator.build(),4])
     assert state.round == 0
     assert is_nil(state.current_paper)
   end
 
   test "Start game" do
-    {:ok, state, _timeout} = Papelito.Server.Game.init(Haikunator.build())
+    {:ok, state, _timeout} = Papelito.Server.Game.init([Haikunator.build(),4])
     {:reply, :ok, new_state, _timeout} = Papelito.Server.Game.handle_call(:start, nil, state)
     assert new_state.round == 1
   end
